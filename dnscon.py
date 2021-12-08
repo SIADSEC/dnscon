@@ -1,10 +1,13 @@
 import requests
+import argparse
 from threading import Thread, Lock
 from queue import Queue
+
 
 q = Queue()
 list_lock = Lock()
 discovered_domains = []
+
 
 def scan_subdomains(domain):
     global q
@@ -33,24 +36,40 @@ def main(domain, n_threads, subdomains):
         worker.daemon = True
         worker.start()
 
+
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description="Subdomain Scanner By SiadSec")
+    parser = argparse.ArgumentParser(
+        description="Subdomain Scanner By SiadSec."
+    )
     parser.add_argument("domain", help="Domain to Scan")
-    parser.add_argument("-l", "--wordlist", help="File that contains all subdomains", default="sub.txt")
-    parser.add_argument("-t", "--num-threads", help="Number of threads to use. Default is 10", default=10, type=int)
-    parser.add_argument("-o", "--output-file", help="Specify the output text file to write discovered subdomains", default="Discovered_subdomains.txt")
-    
+    parser.add_argument(
+        "-l", "--wordlist", help="File that contains all subdomains", default="sub.txt"
+    )
+    parser.add_argument(
+        "-t", "--num-threads",
+        help="Number of threads to use. Default is 10", default=10, type=int
+    )
+    parser.add_argument(
+        "-o", "--output-file",
+        help="Specify the output text file to write discovered subdomains",
+        default="Discovered_subdomains.txt"
+    )
+
     args = parser.parse_args()
     domain = args.domain
     wordlist = args.wordlist
     num_threads = args.num_threads
     output_file = args.output_file
 
-    main(domain=domain, n_threads=num_threads, subdomains=open(wordlist).read().splitlines())
+    main(
+        domain=domain,
+        n_threads=num_threads,
+        subdomains=open(wordlist).read().splitlines()
+    )
     q.join()
 
     with open(output_file, "w") as f:
         for sub in discovered_domains:
             print(sub, file=f)
+
 exit()
