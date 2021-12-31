@@ -6,7 +6,7 @@ Usage: `python3 dnscon.py <domain>`
 
 Requirements:
 
--   `requests` python module.
+- `requests` python module.
 
 Options:
 
