@@ -2,7 +2,11 @@
 
 dnscon, an active subdomain bruteforcing tool.
 
-Usage: `python dnscon.py <domain>`
+Usage: `python3 dnscon.py <domain>`
+
+Requirements:
+
+- `requests` python module.
 
 Options:
 
